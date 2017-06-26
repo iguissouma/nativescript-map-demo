@@ -5,19 +5,33 @@ import { AppComponent } from "./app.component";
 import { HomeComponent } from './home/home.component';
 
 
+import * as platform from "platform";
+import { GeolocationService } from './shared/geolocation.service';
+import { GeocodingService } from './shared/geocoding.service';
+import { NativeScriptHttpModule } from 'nativescript-angular/index';
+declare var GMSServices: any;
+import { Config } from "./config";
+
+if(platform.isIOS) {
+    GMSServices.provideAPIKey(Config.Map.API_KEY);
+}
+
 @NgModule({
     bootstrap: [
         AppComponent
     ],
     imports: [
         NativeScriptModule,
-        AppRoutingModule
+        AppRoutingModule,
+        NativeScriptHttpModule
     ],
     declarations: [
         AppComponent,
         HomeComponent,
     ],
     providers: [
+        GeolocationService,
+        GeocodingService
     ],
     schemas: [
         NO_ERRORS_SCHEMA

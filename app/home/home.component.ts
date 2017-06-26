@@ -1,8 +1,15 @@
 import { Component, OnInit, NgZone } from "@angular/core";
 import { Router } from '@angular/router/router';
 
-import { Config } from "../../config";
 import { GeolocationService } from '../shared/geolocation.service';
+import { MapView } from 'nativescript-google-maps-sdk';
+import { Marker, Position } from 'nativescript-google-maps-sdk';
+
+import { registerElement } from 'nativescript-angular';
+import { GeocodingService } from '../shared/geocoding.service';
+// Important - must register MapView plugin in order to use in Angular templates
+registerElement('MapView', () => MapView);
+
 @Component({
     selector: "ns-home",
     moduleId: module.id,
@@ -12,58 +19,64 @@ export class HomeComponent implements OnInit {
     ngOnInit():void {
     }
 
+    constructor(private geolocationService:GeolocationService,
+                private geocodingService:GeocodingService) {
 
-    private mapbox: any;
-    private photos: any;
-    public mapboxKey: string;
-
-    constructor(private geolocationService: GeolocationService, private zone: NgZone, private router: Router) {
-        this.mapboxKey = Config.MapBox.ACCESS_TOKEN;
     }
 
-    public onMapReady(args) {
-        this.mapbox = args.map;
+    latitude = -33.86;
+    longitude = 151.20;
+    zoom = 8;
+    bearing = 0;
+    tilt = 0;
+    padding = [40, 40, 40, 40];
+    mapView:MapView;
+
+    lastCamera:String;
+
+
+    //Map events
+    onMapReady(event) {
+        console.log('Map Ready');
+
         this.geolocationService.getLocation().then(() => {
-            this.mapbox.setCenter({
-                lat: this.geolocationService.latitude,
-                lng: this.geolocationService.longitude,
-                animated: true
-            });
+            console.log('getLocation Ready');
+            console.log(`lat: ${this.geolocationService.latitude}`);
+            console.log(`lng: ${this.geolocationService.longitude}`);
+            this.mapView = event.object;
+            this.latitude = this.geolocationService.latitude;
+            this.longitude = this.geolocationService.longitude;
 
-        });
-    }
-
-    public dropMarkers() {
-        let markers = this.photos.map((photo: any, index: number) => {
-            return {
-                lat: photo.latitude,
-                lng: photo.longitude,
-                onTap: () => {
-                    this.zone.run(() => {
-                        this.showPhoto({ index: index });
-                    });
+            this.geocodingService.geocode('' + this.latitude, "" + this.longitude).subscribe(
+                (result) => {
+                    console.log(result);
+                    console.log("Setting a marker...");
+                    var marker = new Marker();
+                    marker.position = Position.positionFromLatLng(this.latitude, this.longitude);
+                    marker.title = result;
+                    //marker.snippet = "Australia";
+                    marker.userData = {index: 1};
+                    this.mapView.addMarker(marker);
                 }
-            }
-        });
-        this.mapbox.addMarkers(markers);
-    }
+            )
 
-    public centerMap(args: any) {
-        let photo = this.photos[args.index];
-        this.mapbox.setCenter({
-            lat: parseFloat(photo.latitude),
-            lng: parseFloat(photo.longitude),
-            animated: false
+
         });
     }
 
-    public showPhoto(args: any) {
-        let photo = this.photos[args.index];
-        this.router.navigate(["/image-component", photo.id]);
+    onCoordinateTapped(args) {
+        console.log("Coordinate Tapped, Lat: " + args.position.latitude + ", Lon: " + args.position.longitude, args);
     }
 
-    public loadPhotos() {
-        //return this.flickrService.photosSearch(this.geolocationService.latitude, this.geolocationService.longitude);
+    onMarkerEvent(args) {
+        console.log("Marker Event: '" + args.eventName
+            + "' triggered on: " + args.marker.title
+            + ", Lat: " + args.marker.position.latitude + ", Lon: " + args.marker.position.longitude, args);
+    }
+
+    onCameraChanged(args) {
+        console.log("Camera changed: " + JSON.stringify(args.camera), JSON.stringify(args.camera) === this.lastCamera);
+        this.lastCamera = JSON.stringify(args.camera);
     }
 
 }

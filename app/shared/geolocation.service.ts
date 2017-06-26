@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import * as geolocation from "nativescript-geolocation";
-//var humanizeDistance = require("humanize-distance");
 
 @Injectable()
 export class GeolocationService {
@@ -26,10 +25,6 @@ export class GeolocationService {
             }
         );
     }
-
-    /*public getDistanceFrom(latitude: number, longitude: number): string {
-        return humanizeDistance({ latitude: latitude, longitude: longitude }, { latitude: this.latitude, longitude: this.longitude }, 'en-US', 'us');
-    }*/
 
     private _getCurrentLocation(): Promise<any> {
         return new Promise(

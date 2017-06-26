@@ -1,16 +1,11 @@
 <ActionBar title="Maps Native Geocoder" class="action-bar">
 </ActionBar>
-<StackLayout class="page">
-    <ContentView row="1" col="0">
-        <Mapbox
-                accessToken="{{ mapboxKey }}"
-                mapStyle="streets"
-                zoomLevel="17"
-                latitude="52.3702160"
-                longitude="4.8951680"
-                hideLogo="true"
-                showUserLocation="true"
-                (mapReady)="onMapReady($event)">
-        </Mapbox>
-    </ContentView>
-</StackLayout>
+<GridLayout>
+    <MapView #mapView [latitude]="latitude" [longitude]="longitude"
+             [zoom]="zoom" [bearing]="bearing"
+             [tilt]="tilt" i-padding="50,50,50,50" [padding]="padding" (mapReady)="onMapReady($event)"
+             (markerSelect)="onMarkerEvent($event)" (markerBeginDragging)="onMarkerEvent($event)"
+             (markerEndDragging)="onMarkerEvent($event)" (markerDrag)="onMarkerEvent($event)"
+             (markerInfoWindowTapped)="onMarkerEvent($event)" (coordinateTapped)="onCoordinateTapped($event)"
+             (cameraChanged)="onCameraChanged($event)"></MapView>
+</GridLayout>
