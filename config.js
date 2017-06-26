@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Config = {
+    MapBox: {
+        ACCESS_TOKEN: "sk.eyJ1IjoiYnVya2Vob2xsYW5kIiwiYSI6ImNpcXh3NXd3NDAxcDJmbG04M2FxNW5zc3YifQ.kVNHOX6UvgsTPS4BJebtLg"
+    }
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiY29uZmlnLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQWEsUUFBQSxNQUFNLEdBQUc7SUFDbEIsTUFBTSxFQUFFO1FBQ0osWUFBWSxFQUFFLGtHQUFrRztLQUNuSDtDQUNKLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3QgQ29uZmlnID0ge1xyXG4gICAgTWFwQm94OiB7XHJcbiAgICAgICAgQUNDRVNTX1RPS0VOOiBcInNrLmV5SjFJam9pWW5WeWEyVm9iMnhzWVc1a0lpd2lZU0k2SW1OcGNYaDNOWGQzTkRBeGNESm1iRzA0TTJGeE5XNXpjM1lpZlEua1ZOSE9YNlV2Z3NUUFM0QkplYnRMZ1wiXHJcbiAgICB9XHJcbn07Il19
